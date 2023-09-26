@@ -48,7 +48,7 @@ def login():
     state = "".join(
         secrets.choice(string.ascii_uppercase + string.digits) for _ in range(16)
     )
-    scope = "user-top-read"
+    scope = "user-top-read user-read-private user-read-email"
     payload = {
         "client_id": CLIENT_ID,
         "response_type": "code",
@@ -108,10 +108,48 @@ def refresh():
 def user():
     headers = {"Authorization": f"Bearer {session['tokens'].get('access_token')}"}
 
-    r = get(BASE_URL, headers=headers)
-    r_data = json.loads(r.content)
+    r_user = get(BASE_URL, headers=headers)
+    user_data = json.loads(r_user.content)
 
-    return render_template("user.html", data=r_data, tokens=session.get("tokens"))
+    r_top_artists = get(url=f"{BASE_URL}/top/artists", headers=headers)
+    top_artists_data = json.loads(r_top_artists.content)
+    r_top_tracks = get(url=f"{BASE_URL}/top/tracks", headers=headers)
+    top_tracks_data = json.loads(r_top_tracks.content)
+
+    top_artists = []
+    for artist in top_artists_data["items"]:
+        artist_info = {}
+        artist_info["name"] = artist["name"]
+        genres = ""
+        for genre in artist["genres"]:
+            genres = genres + f"{genre}, "
+        genres = genres[:-2]
+        if genres == "":
+            genres = "no genre listed"
+        artist_info["genres"] = genres
+        top_artists.append(artist_info)
+    print(top_artists)
+
+    tracks = []
+    for track in top_tracks_data["items"]:
+        track_info = {}
+        track_info["name"] = track["name"]
+        artists = ""
+        for artist in track["artists"]:
+            artists = artists + f"{artist['name']}, "
+        artists = artists[:-2]
+        track_info["artists"] = artists
+        tracks.append(track_info)
+
+    data = {
+        "user_name": user_data["display_name"],
+        "user_country": user_data["country"],
+        "user_profile_pic": user_data["images"][0]["url"],
+        "top_artists": top_artists,
+        "top_tracks": tracks,
+    }
+
+    return render_template("user.html", data=data, tokens=session.get("tokens"))
 
 
 @app.route("/<top_items>")

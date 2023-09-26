@@ -10,12 +10,72 @@
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
         />
-        <link rel="stylesheet" href="main.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static',filename='styles/site.css') }}"
+        />
 
-        <title>User | Spotify API Test Site</title>
+        <title>Dashboard | Spotify API Test Site</title>
     </head>
     <body>
-        <a href="/top_artists" class="btn btn-primary">Top Artists</a>
-        <a href="/top_tracks" class="btn btn-primary">Top Tracks</a>
+        <div class="container">
+            <nav class="navbar navbar-dark fixed-top nav-h1">
+                <div class="container d-flex justify-content-center">
+                    <h1>{{ data["user_name"] }}</h1>
+                </div>
+            </nav>
+        </div>
+
+        <div class="container p-0">
+            <div class="row justify-content-start">
+                <div class="col-2">
+                    <img
+                        src="{{ data['user_profile_pic'] }}"
+                        alt="User Profile Picture"
+                        id="profile-pic"
+                    />
+                </div>
+                <div class="col-10 d-flex flex-column align-items-start py-4">
+                    <h1 class="mb-4">{{ data["user_name"] }}</h1>
+                    <h5>Location: {{ data["user_country"] }}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col me-4" id="list">
+                    <h3>Top Artists</h3>
+                    <ol class="list-group list-group-numbered list-group-flush">
+                        {% for item in data["top_artists"] %}
+                        <li class="list-group-item row">
+                            <h4>{{ item["name"] }}</h4>
+                            <h5>{{ item["genres"] }}</h5>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+                <div class="col ms-4" id="list">
+                    <h3>Top Tracks</h3>
+                    <ol class="list-group list-group-numbered list-group-flush">
+                        {% for item in data["top_tracks"] %}
+                        <li class="list-group-item row">
+                            <h4>{{ item["name"] }}</h4>
+                            <h5>{{ item["artists"] }}</h5>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const navScroll = document.querySelector(".nav-h1");
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 100) {
+                    navScroll.classList.add("nav-h1-scrolled");
+                } else if (window.scrollY <= 100) {
+                    navScroll.classList.remove("nav-h1-scrolled");
+                }
+            });
+        </script>
     </body>
 </html>

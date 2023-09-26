@@ -1,0 +1,95 @@
+html,
+body {
+    min-height: 100vh;
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: black;
+    color: white;
+    padding: 5rem;
+}
+
+h1 {
+    font-weight: bold;
+}
+
+h3 {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: black;
+}
+
+h5 {
+    font-style: italic;
+}
+
+div.row {
+    margin-bottom: 5rem;
+}
+
+li {
+    margin-bottom: 1rem;
+}
+
+.list-group-item {
+    background-color: rgba(0, 0, 0, 0);
+    color: black;
+}
+
+.navbar {
+    transition: 0.5s;
+    top: 0;
+    z-index: 2;
+}
+
+.nav-h1 {
+    color: white;
+    background-color: black;
+    opacity: 0;
+}
+
+.nav-h1-scrolled {
+    opacity: 1;
+}
+
+.btn {
+    position: absolute;
+    bottom: 50vh;
+    right: 70vh;
+    left: 70vh;
+}
+
+.btn-primary {
+    color: black;
+    background-color: white;
+    border-color: white;
+}
+
+.btn-primary:hover {
+    color: white;
+    background-color: black;
+    border-color: white;
+}
+
+a.btn.btn-primary:active {
+    color: black;
+    background-color: white;
+    border-color: white;
+}
+
+#profile-pic {
+    width: 10rem;
+    height: 10rem;
+    border-radius: 2rem;
+    border-width: 0;
+}
+
+#list {
+    padding: 2rem;
+    background-color: white;
+    border-radius: 2rem;
+    border-width: 0;
+}
